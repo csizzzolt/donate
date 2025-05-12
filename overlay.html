@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="3600" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tranzakciók Overlay</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      color: #00ffcc;
+      font-family: monospace;
+      font-size: 24px;
+    }
+    #tx {
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div id="tx">Várakozás tranzakcióra...</div>
+  <script>
+    async function poll() {
+      try {
+        const response = await fetch('/latest-tx');
+        const text = await response.text();
+        document.getElementById('tx').textContent = text;
+      } catch (err) {
+        console.error("Hiba a lekérdezés során:", err);
+      }
+    }
+    setInterval(poll, 5000);
+    poll();
+  </script>
+</body>
+</html>
